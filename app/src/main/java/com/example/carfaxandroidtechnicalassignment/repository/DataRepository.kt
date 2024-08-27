@@ -1,21 +1,17 @@
 package com.example.carfaxandroidtechnicalassignment.repository
 
 import android.content.Context
-import android.util.Log
 import com.example.carfaxandroidtechnicalassignment.api.Api
 import com.example.carfaxandroidtechnicalassignment.db.AppDatabase
 import com.example.carfaxandroidtechnicalassignment.db.CarDataModel
-import com.example.carfaxandroidtechnicalassignment.models.Listings
 import com.example.carfaxandroidtechnicalassignment.utils.Utils
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.coroutines.coroutineContext
 
 class DataRepository @Inject constructor(private  val api: Api,private val appDatabase: AppDatabase,@ApplicationContext val context: Context) {
 

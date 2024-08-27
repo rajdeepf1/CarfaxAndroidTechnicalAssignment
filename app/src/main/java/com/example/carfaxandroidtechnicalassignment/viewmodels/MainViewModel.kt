@@ -3,7 +3,6 @@ package com.example.carfaxandroidtechnicalassignment.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.carfaxandroidtechnicalassignment.db.CarDataModel
-import com.example.carfaxandroidtechnicalassignment.models.Listings
 import com.example.carfaxandroidtechnicalassignment.repository.DataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.StateFlow
