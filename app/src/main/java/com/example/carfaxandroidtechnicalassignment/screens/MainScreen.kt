@@ -39,16 +39,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.carfaxandroidtechnicalassignment.R
 import com.example.carfaxandroidtechnicalassignment.models.Listings
 import com.example.carfaxandroidtechnicalassignment.ui.theme.buttonTextColor
+import com.example.carfaxandroidtechnicalassignment.viewmodels.DetailViewModel
 import com.example.carfaxandroidtechnicalassignment.viewmodels.MainViewModel
 
-
 @Composable
-fun MainScreen() {
+fun MainScreen(navController: NavController,detailViewModel: DetailViewModel) {
     val mainViewModel: MainViewModel = hiltViewModel()
     val data: State<List<Listings>> = mainViewModel.carList.collectAsState()
 
@@ -60,7 +61,7 @@ fun MainScreen() {
         }
     } else {
         LazyColumn(Modifier.fillMaxSize()) {
-            items(items = data.value, itemContent = { Item(listings = it) })
+            items(items = data.value, itemContent = { Item(listings = it, detailViewModel,navController) })
         }
     }
 
@@ -68,7 +69,7 @@ fun MainScreen() {
 }
 
 @Composable
-fun Item(listings: Listings) {
+fun Item(listings: Listings, detailViewModel: DetailViewModel,navController: NavController) {
 
 
     val context = LocalContext.current
@@ -99,7 +100,10 @@ fun Item(listings: Listings) {
         modifier = Modifier
             .padding(8.dp)
             .wrapContentHeight()
-            .clickable { },
+            .clickable {
+                detailViewModel.setData(listings)
+                       navController.navigate("detail-screen")
+                       },
         shape = MaterialTheme.shapes.small,
         elevation = CardDefaults.cardElevation(4.dp),
     ) {

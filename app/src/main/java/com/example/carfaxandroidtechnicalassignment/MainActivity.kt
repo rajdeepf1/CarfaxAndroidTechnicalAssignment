@@ -1,6 +1,7 @@
 package com.example.carfaxandroidtechnicalassignment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -11,55 +12,43 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTooltipState
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.carfaxandroidtechnicalassignment.models.Listings
+import com.example.carfaxandroidtechnicalassignment.screens.DetailScreen
 import com.example.carfaxandroidtechnicalassignment.screens.MainScreen
 import com.example.carfaxandroidtechnicalassignment.ui.theme.CarfaxAndroidTechnicalAssignmentTheme
 import com.example.carfaxandroidtechnicalassignment.ui.theme.toolBarColor
+import com.example.carfaxandroidtechnicalassignment.viewmodels.DetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge()
+
         setContent {
             CarfaxAndroidTechnicalAssignmentTheme {
-                Scaffold(
-                    topBar = {
-                        TopAppBar(
-                            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                                containerColor = toolBarColor,
-                                titleContentColor = Color.White,
-                            ),
-                            title = {
-                                Text(
-                                    "CARFAX",
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis,
-                                    modifier = Modifier.padding(50.dp, 0.dp)
-                                )
-                            },
-                        )
-                    }
-                ) {
-                    Box(modifier = Modifier.padding(it)) {
-                        App(
-
-                        )
-                    }
-                }
+                App()
             }
         }
     }
@@ -67,24 +56,50 @@ class MainActivity : ComponentActivity() {
 
 }
 
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun App() {
-    val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "main-screen") {
-        composable(route = "main-screen") {
-            MainScreen()
-        }
+fun App(){
 
-//        composable(route = "detail/{}", arguments = listOf(
-//            navArgument("") {
-//                type = NavType.StringType
-//            }
-//        ))
-//        {
-//            DetailScreen()
-//        }
+    val navController = rememberNavController()
+    val detailViewModel = remember {
+        DetailViewModel()
+    }
+
+    // Observe the current back stack entry
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = toolBarColor,
+                    titleContentColor = Color.White,
+                ),
+                title = {
+                    Text(
+                        "CARFAX",
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.padding(50.dp, 0.dp)
+                    )
+                },
+            )
+        }
+    ) {
+        Box(modifier = Modifier.padding(it)) {
+            NavHost(navController = navController, startDestination = "main-screen") {
+                composable(route = "main-screen") {
+                    MainScreen(navController,detailViewModel)
+                }
+                composable(route = "detail-screen")
+                {
+                    DetailScreen(navController,detailViewModel)
+                }
+            }
+        }
     }
 }
+
 
 
