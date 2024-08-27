@@ -69,8 +69,6 @@ fun DetailScreen(detailViewModel: DetailViewModel) {
         ) == PackageManager.PERMISSION_GRANTED
     }
 
-
-
     if (data == null) {
         Box(
             modifier = Modifier.fillMaxSize(1f), contentAlignment = Alignment.Center
@@ -90,7 +88,6 @@ fun DetailScreen(detailViewModel: DetailViewModel) {
         ) {
 
             Column(modifier = Modifier.weight(1f, true)) {
-
 
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
@@ -121,7 +118,7 @@ fun DetailScreen(detailViewModel: DetailViewModel) {
                         containerColor = Color.White,
                     ),
                     modifier = Modifier
-                        .padding(2.dp)
+                        .padding(8.dp)
                         .wrapContentHeight()
                         .fillMaxWidth(),
                     shape = MaterialTheme.shapes.extraSmall,
