@@ -45,6 +45,7 @@ import coil.request.ImageRequest
 import com.example.carfaxandroidtechnicalassignment.R
 import com.example.carfaxandroidtechnicalassignment.models.Listings
 import com.example.carfaxandroidtechnicalassignment.ui.theme.buttonTextColor
+import com.example.carfaxandroidtechnicalassignment.utils.Utils.startCall
 import com.example.carfaxandroidtechnicalassignment.viewmodels.DetailViewModel
 import com.example.carfaxandroidtechnicalassignment.viewmodels.MainViewModel
 
@@ -158,10 +159,6 @@ fun Item(listings: Listings, detailViewModel: DetailViewModel,navController: Nav
 }
 
 
-fun startCall(context: android.content.Context, phoneNumber: String) {
-    val callIntent = Intent(Intent.ACTION_CALL)
-    callIntent.data = Uri.parse("tel:$phoneNumber")
-    context.startActivity(callIntent)
-}
+
 
 

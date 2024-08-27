@@ -12,3 +12,5 @@ val Pink40 = Color(0xFF7D5260)
 
 val toolBarColor = Color(0xFF4874b7)
 val buttonTextColor = Color(0xFF4675b6)
+val carNameColor = Color(0xFF404040)
+val infoLabel = Color(0xFF7E7D7D)
