@@ -107,7 +107,7 @@ fun Item(listings: Listings) {
         Column {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(listings.images.firstPhoto.medium).crossfade(true).build(),
+                    .data(listings.images.firstPhoto.large).crossfade(true).build(),
                 placeholder = painterResource(R.drawable.placeholder),
                 contentDescription = "image",
                 contentScale = ContentScale.Crop,
@@ -121,7 +121,7 @@ fun Item(listings: Listings) {
             fontWeight = FontWeight.Bold
         )
         Text(
-            text = "${listings.listPrice}  |  ${listings.mileage}",
+            text = "\$ ${listings.currentPrice}  |  ${listings.mileage} k mi",
             modifier = Modifier.padding(12.dp, 4.dp),
         )
         Text(

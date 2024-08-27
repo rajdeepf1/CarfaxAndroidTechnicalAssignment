@@ -8,7 +8,7 @@ data class Listings(
     val bodytype: String,
     val cabType: String,
     val certified: Boolean,
-    val currentPrice: Int,
+    val currentPrice: Double,
     val dealer: Dealer,
     val dealerType: String,
     val displacement: String,
