@@ -5,7 +5,7 @@ import com.example.carfaxandroidtechnicalassignment.db.CarDataModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class DetailViewModel : ViewModel(){
+class DetailViewModel : ViewModel() {
 
     private val _dataFlow = MutableStateFlow<CarDataModel?>(null)
     val dataFlow: StateFlow<CarDataModel?> = _dataFlow

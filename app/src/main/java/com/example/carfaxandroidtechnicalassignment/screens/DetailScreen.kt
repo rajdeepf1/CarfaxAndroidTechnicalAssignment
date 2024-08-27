@@ -37,7 +37,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.carfaxandroidtechnicalassignment.R
@@ -49,14 +48,12 @@ import com.example.carfaxandroidtechnicalassignment.viewmodels.DetailViewModel
 
 
 @Composable
-fun DetailScreen(navController: NavController, detailViewModel: DetailViewModel) {
-
+fun DetailScreen(detailViewModel: DetailViewModel) {
     val data = detailViewModel.dataFlow.collectAsState().value
 
     val context = LocalContext.current
     var hasCallPermission by remember { mutableStateOf(false) }
 
-    // Register the permissions request
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
@@ -66,7 +63,6 @@ fun DetailScreen(navController: NavController, detailViewModel: DetailViewModel)
         }
     }
 
-    // Check permission state
     LaunchedEffect(key1 = true) {
         hasCallPermission = ContextCompat.checkSelfPermission(
             context, android.Manifest.permission.CALL_PHONE
@@ -79,7 +75,10 @@ fun DetailScreen(navController: NavController, detailViewModel: DetailViewModel)
         Box(
             modifier = Modifier.fillMaxSize(1f), contentAlignment = Alignment.Center
         ) {
-            androidx.compose.material3.Text(text = "No Data Found!", style = MaterialTheme.typography.bodyMedium)
+            androidx.compose.material3.Text(
+                text = "No Data Found!",
+                style = MaterialTheme.typography.bodyMedium
+            )
         }
     } else {
 
@@ -218,10 +217,8 @@ fun DetailScreen(navController: NavController, detailViewModel: DetailViewModel)
             TextButton(
                 onClick = {
                     if (hasCallPermission) {
-                        // Make a direct call
                         startCall(context, data!!.phone)
                     } else {
-                        // Request the permission
                         requestPermissionLauncher.launch(android.Manifest.permission.CALL_PHONE)
                     }
                 },

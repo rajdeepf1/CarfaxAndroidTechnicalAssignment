@@ -49,7 +49,7 @@ import com.example.carfaxandroidtechnicalassignment.viewmodels.DetailViewModel
 import com.example.carfaxandroidtechnicalassignment.viewmodels.MainViewModel
 
 @Composable
-fun MainScreen(navController: NavController,detailViewModel: DetailViewModel) {
+fun MainScreen(navController: NavController, detailViewModel: DetailViewModel) {
     val mainViewModel: MainViewModel = hiltViewModel()
     val data: State<List<CarDataModel>> = mainViewModel.carList.collectAsState()
 
@@ -61,7 +61,9 @@ fun MainScreen(navController: NavController,detailViewModel: DetailViewModel) {
         }
     } else {
         LazyColumn(Modifier.fillMaxSize()) {
-            items(items = data.value, itemContent = { Item(carDataModel = it, detailViewModel,navController) })
+            items(
+                items = data.value,
+                itemContent = { Item(carDataModel = it, detailViewModel, navController) })
         }
     }
 
@@ -69,7 +71,11 @@ fun MainScreen(navController: NavController,detailViewModel: DetailViewModel) {
 }
 
 @Composable
-fun Item(carDataModel: CarDataModel, detailViewModel: DetailViewModel,navController: NavController) {
+fun Item(
+    carDataModel: CarDataModel,
+    detailViewModel: DetailViewModel,
+    navController: NavController
+) {
 
 
     val context = LocalContext.current

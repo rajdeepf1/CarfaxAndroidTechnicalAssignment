@@ -10,10 +10,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val repository: DataRepository) : ViewModel(){
+class MainViewModel @Inject constructor(private val repository: DataRepository) : ViewModel() {
 
-    val carList : StateFlow<List<CarDataModel>>
-
+    val carList: StateFlow<List<CarDataModel>>
         get() = repository.carList
 
     init {

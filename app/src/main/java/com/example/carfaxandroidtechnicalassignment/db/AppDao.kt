@@ -8,8 +8,8 @@ import androidx.room.Query
 @Dao
 interface AppDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addListings(data : CarDataModel)
+    suspend fun addListings(data: CarDataModel)
 
     @Query("SELECT * FROM CarDataModel")
-    suspend fun getListings() : List<CarDataModel>
+    suspend fun getListings(): List<CarDataModel>
 }

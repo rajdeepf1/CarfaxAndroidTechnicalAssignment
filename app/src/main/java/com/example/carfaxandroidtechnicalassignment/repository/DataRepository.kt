@@ -13,23 +13,27 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class DataRepository @Inject constructor(private  val api: Api,private val appDatabase: AppDatabase,@ApplicationContext val context: Context) {
+class DataRepository @Inject constructor(
+    private val api: Api,
+    private val appDatabase: AppDatabase,
+    @ApplicationContext val context: Context
+) {
 
     private val _carList = MutableStateFlow<List<CarDataModel>>(emptyList())
     val carList: StateFlow<List<CarDataModel>>
         get() = _carList
 
 
-    suspend fun getList(){
+    suspend fun getList() {
 
-        if (Utils.checkForInternet(context)){
+        if (Utils.checkForInternet(context)) {
             val response = api.getData()
-            if (response.isSuccessful && response.body() != null){
+            if (response.isSuccessful && response.body() != null) {
                 var mutableList = mutableListOf<CarDataModel>()
                 val apiData = response.body()!!.listings
 
-                for (i in apiData){
-                    var  carDataModel = CarDataModel()
+                for (i in apiData) {
+                    var carDataModel = CarDataModel()
                     carDataModel.id = i.id
                     carDataModel.model = i.model
                     carDataModel.carImage = i.images.firstPhoto.large
@@ -56,17 +60,17 @@ class DataRepository @Inject constructor(private  val api: Api,private val appDa
 
 
                 CoroutineScope(Dispatchers.IO).launch {
-                    for (i in mutableList){
+                    for (i in mutableList) {
                         appDatabase.getDAO().addListings(i)
                     }
                 }
 
 
-            }else {
+            } else {
                 val data = appDatabase.getDAO().getListings()
                 _carList.emit(data)
             }
-        }else{
+        } else {
             //No Internet Connection
             val data = appDatabase.getDAO().getListings()
             _carList.emit(data)

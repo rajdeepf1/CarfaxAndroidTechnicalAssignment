@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
 
-        if (!Utils.checkForInternet(applicationContext)){
+        if (!Utils.checkForInternet(applicationContext)) {
             Toast.makeText(applicationContext, "No Internet Connection!", Toast.LENGTH_SHORT).show()
         }
 
@@ -56,43 +56,47 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun App(){
+fun App() {
 
     val navController = rememberNavController()
+
     val detailViewModel = remember {
         DetailViewModel()
     }
 
-    // Observe the current back stack entry
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
-
     Scaffold(
+
         topBar = {
-            TopAppBar(
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = toolBarColor,
-                    titleContentColor = Color.White,
-                ),
-                title = {
-                    Text(
-                        "CARFAX",
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.padding(50.dp, 0.dp)
-                    )
-                },
-            )
+            // Observe the current back stack entry
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
+            val currentRoute = navBackStackEntry?.destination?.route
+            if (currentRoute != "detail-screen") {
+                TopAppBar(
+                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                        containerColor = toolBarColor,
+                        titleContentColor = Color.White,
+                    ),
+                    title = {
+                        Text(
+                            "CARFAX",
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.padding(50.dp, 0.dp)
+                        )
+                    },
+                )
+            }
+
         }
     ) {
         Box(modifier = Modifier.padding(it)) {
             NavHost(navController = navController, startDestination = "main-screen") {
                 composable(route = "main-screen") {
-                    MainScreen(navController,detailViewModel)
+                    MainScreen(navController, detailViewModel)
                 }
                 composable(route = "detail-screen")
                 {
-                    DetailScreen(navController,detailViewModel)
+                    DetailScreen(detailViewModel)
                 }
             }
         }
