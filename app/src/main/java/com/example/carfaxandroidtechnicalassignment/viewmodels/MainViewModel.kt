@@ -2,6 +2,7 @@ package com.example.carfaxandroidtechnicalassignment.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.carfaxandroidtechnicalassignment.db.CarDataModel
 import com.example.carfaxandroidtechnicalassignment.models.Listings
 import com.example.carfaxandroidtechnicalassignment.repository.DataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(private val repository: DataRepository) : ViewModel(){
 
-    val carList : StateFlow<List<Listings>>
+    val carList : StateFlow<List<CarDataModel>>
 
         get() = repository.carList
 

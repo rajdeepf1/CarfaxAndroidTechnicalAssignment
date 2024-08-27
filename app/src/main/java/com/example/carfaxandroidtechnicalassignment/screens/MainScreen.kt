@@ -1,6 +1,7 @@
 package com.example.carfaxandroidtechnicalassignment.screens
 
 import android.content.pm.PackageManager
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -41,7 +42,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.carfaxandroidtechnicalassignment.R
-import com.example.carfaxandroidtechnicalassignment.models.Listings
+import com.example.carfaxandroidtechnicalassignment.db.CarDataModel
 import com.example.carfaxandroidtechnicalassignment.ui.theme.buttonTextColor
 import com.example.carfaxandroidtechnicalassignment.utils.Utils.startCall
 import com.example.carfaxandroidtechnicalassignment.viewmodels.DetailViewModel
@@ -50,7 +51,7 @@ import com.example.carfaxandroidtechnicalassignment.viewmodels.MainViewModel
 @Composable
 fun MainScreen(navController: NavController,detailViewModel: DetailViewModel) {
     val mainViewModel: MainViewModel = hiltViewModel()
-    val data: State<List<Listings>> = mainViewModel.carList.collectAsState()
+    val data: State<List<CarDataModel>> = mainViewModel.carList.collectAsState()
 
     if (data.value.isEmpty()) {
         Box(
@@ -60,7 +61,7 @@ fun MainScreen(navController: NavController,detailViewModel: DetailViewModel) {
         }
     } else {
         LazyColumn(Modifier.fillMaxSize()) {
-            items(items = data.value, itemContent = { Item(listings = it, detailViewModel,navController) })
+            items(items = data.value, itemContent = { Item(carDataModel = it, detailViewModel,navController) })
         }
     }
 
@@ -68,7 +69,7 @@ fun MainScreen(navController: NavController,detailViewModel: DetailViewModel) {
 }
 
 @Composable
-fun Item(listings: Listings, detailViewModel: DetailViewModel,navController: NavController) {
+fun Item(carDataModel: CarDataModel, detailViewModel: DetailViewModel,navController: NavController) {
 
 
     val context = LocalContext.current
@@ -100,17 +101,18 @@ fun Item(listings: Listings, detailViewModel: DetailViewModel,navController: Nav
             .padding(8.dp)
             .wrapContentHeight()
             .clickable {
-                detailViewModel.setData(listings)
-                       navController.navigate("detail-screen")
-                       },
+                detailViewModel.setData(carDataModel)
+                navController.navigate("detail-screen")
+            },
         shape = MaterialTheme.shapes.small,
         elevation = CardDefaults.cardElevation(4.dp),
     ) {
 
         Column {
+            Log.d("IMAGE---->", "Item: ${carDataModel.carImage}")
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(listings.images.firstPhoto.large).crossfade(true).build(),
+                    .data(carDataModel.carImage).crossfade(true).build(),
                 placeholder = painterResource(R.drawable.placeholder),
                 contentDescription = "image",
                 contentScale = ContentScale.Crop,
@@ -119,16 +121,16 @@ fun Item(listings: Listings, detailViewModel: DetailViewModel,navController: Nav
             )
         }
         Text(
-            text = "${listings.year} ${listings.make} ${listings.model} ${listings.trim}",
+            text = "${carDataModel.year} ${carDataModel.make} ${carDataModel.model} ${carDataModel.trim}",
             modifier = Modifier.padding(12.dp, 4.dp),
             fontWeight = FontWeight.Bold
         )
         Text(
-            text = "\$ ${listings.currentPrice}  |  ${listings.mileage} k mi",
+            text = "\$ ${carDataModel.currentPrice}  |  ${carDataModel.mileage} k mi",
             modifier = Modifier.padding(12.dp, 4.dp),
         )
         Text(
-            text = listings.dealer.address,
+            text = carDataModel.dealerAddress,
             modifier = Modifier.padding(12.dp, 4.dp),
 
             )
@@ -139,7 +141,7 @@ fun Item(listings: Listings, detailViewModel: DetailViewModel,navController: Nav
             onClick = {
                 if (hasCallPermission) {
                     // Make a direct call
-                    startCall(context, listings.dealer.phone)
+                    startCall(context, carDataModel.phone)
                 } else {
                     // Request the permission
                     requestPermissionLauncher.launch(android.Manifest.permission.CALL_PHONE)
@@ -155,8 +157,3 @@ fun Item(listings: Listings, detailViewModel: DetailViewModel,navController: Nav
     }
 
 }
-
-
-
-
-
