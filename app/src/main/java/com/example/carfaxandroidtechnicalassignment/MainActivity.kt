@@ -2,6 +2,7 @@ package com.example.carfaxandroidtechnicalassignment
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -32,6 +33,7 @@ import com.example.carfaxandroidtechnicalassignment.screens.DetailScreen
 import com.example.carfaxandroidtechnicalassignment.screens.MainScreen
 import com.example.carfaxandroidtechnicalassignment.ui.theme.CarfaxAndroidTechnicalAssignmentTheme
 import com.example.carfaxandroidtechnicalassignment.ui.theme.toolBarColor
+import com.example.carfaxandroidtechnicalassignment.utils.Utils
 import com.example.carfaxandroidtechnicalassignment.viewmodels.DetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -45,6 +47,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge()
+
+        if (!Utils.checkForInternet(applicationContext)){
+            Toast.makeText(applicationContext, "No Internet Connection!", Toast.LENGTH_SHORT).show()
+        }
 
         setContent {
             CarfaxAndroidTechnicalAssignmentTheme {
