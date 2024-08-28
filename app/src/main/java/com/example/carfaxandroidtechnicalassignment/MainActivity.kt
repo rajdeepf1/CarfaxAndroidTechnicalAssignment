@@ -67,7 +67,6 @@ fun App() {
     Scaffold(
 
         topBar = {
-            // Observe the current back stack entry
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry?.destination?.route
             if (currentRoute != "detail-screen") {

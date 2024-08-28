@@ -1,11 +1,11 @@
 package com.example.carfaxandroidtechnicalassignment.api
 
 import com.example.carfaxandroidtechnicalassignment.models.DataSetModel
-import retrofit2.Response
+import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.GET
 
 interface Api {
 
     @GET("/assignment.json")
-    suspend fun getData(): Response<DataSetModel>
+    fun getData(): Observable<DataSetModel>
 }

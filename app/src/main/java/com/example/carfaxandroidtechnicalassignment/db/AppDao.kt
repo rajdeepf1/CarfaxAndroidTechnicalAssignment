@@ -4,12 +4,13 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import io.reactivex.rxjava3.core.Observable
 
 @Dao
 interface AppDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addListings(data: CarDataModel)
+    fun addListings(data: CarDataModel)
 
     @Query("SELECT * FROM CarDataModel")
-    suspend fun getListings(): List<CarDataModel>
+    fun getListings(): Observable<List<CarDataModel>>
 }

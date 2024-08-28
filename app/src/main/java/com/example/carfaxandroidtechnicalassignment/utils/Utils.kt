@@ -8,7 +8,7 @@ import android.net.Uri
 import android.os.Build
 
 object Utils {
-    fun startCall(context: android.content.Context, phoneNumber: String) {
+    fun startCall(context: Context, phoneNumber: String) {
         val callIntent = Intent(Intent.ACTION_CALL)
         callIntent.data = Uri.parse("tel:$phoneNumber")
         context.startActivity(callIntent)

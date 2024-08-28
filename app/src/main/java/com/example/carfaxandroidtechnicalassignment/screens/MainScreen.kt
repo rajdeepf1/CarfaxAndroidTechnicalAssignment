@@ -1,7 +1,6 @@
 package com.example.carfaxandroidtechnicalassignment.screens
 
 import android.content.pm.PackageManager
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -22,8 +21,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,9 +48,11 @@ import com.example.carfaxandroidtechnicalassignment.viewmodels.MainViewModel
 @Composable
 fun MainScreen(navController: NavController, detailViewModel: DetailViewModel) {
     val mainViewModel: MainViewModel = hiltViewModel()
-    val data: State<List<CarDataModel>> = mainViewModel.carList.collectAsState()
 
-    if (data.value.isEmpty()) {
+    val data by mainViewModel.dataList
+    val isLoading by mainViewModel.isLoading
+
+    if (data.isEmpty() || isLoading) {
         Box(
             modifier = Modifier.fillMaxSize(1f), contentAlignment = Alignment.Center
         ) {
@@ -62,11 +61,10 @@ fun MainScreen(navController: NavController, detailViewModel: DetailViewModel) {
     } else {
         LazyColumn(Modifier.fillMaxSize()) {
             items(
-                items = data.value,
+                items = data,
                 itemContent = { Item(carDataModel = it, detailViewModel, navController) })
         }
     }
-
 
 }
 
@@ -81,7 +79,6 @@ fun Item(
     val context = LocalContext.current
     var hasCallPermission by remember { mutableStateOf(false) }
 
-    // Register the permissions request
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
@@ -91,7 +88,6 @@ fun Item(
         }
     }
 
-    // Check permission state
     LaunchedEffect(key1 = true) {
         hasCallPermission = ContextCompat.checkSelfPermission(
             context, android.Manifest.permission.CALL_PHONE
@@ -115,7 +111,6 @@ fun Item(
     ) {
 
         Column {
-            Log.d("IMAGE---->", "Item: ${carDataModel.carImage}")
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(carDataModel.carImage).crossfade(true).build(),
@@ -146,10 +141,8 @@ fun Item(
         TextButton(
             onClick = {
                 if (hasCallPermission) {
-                    // Make a direct call
                     startCall(context, carDataModel.phone)
                 } else {
-                    // Request the permission
                     requestPermissionLauncher.launch(android.Manifest.permission.CALL_PHONE)
                 }
             }, modifier = Modifier.align(Alignment.CenterHorizontally)

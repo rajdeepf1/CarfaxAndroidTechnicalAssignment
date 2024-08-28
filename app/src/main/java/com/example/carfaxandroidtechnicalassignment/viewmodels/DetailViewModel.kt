@@ -11,7 +11,7 @@ class DetailViewModel : ViewModel() {
     val dataFlow: StateFlow<CarDataModel?> = _dataFlow
 
     fun setData(newData: CarDataModel) {
-        _dataFlow.value = newData // Update the flow with new data
+        _dataFlow.value = newData
     }
 
 }
