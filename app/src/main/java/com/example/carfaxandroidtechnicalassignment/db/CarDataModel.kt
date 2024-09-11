@@ -5,8 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class CarDataModel(
-    @PrimaryKey(autoGenerate = false)
-    var id: String = "",
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0,
     var carImage: String = "",
     var year: Int = 0,
     var make: String = "",

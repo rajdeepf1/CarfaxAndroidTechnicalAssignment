@@ -1,6 +1,7 @@
 package com.example.carfaxandroidtechnicalassignment.repository
 
 import android.content.Context
+import android.util.Log
 import com.example.carfaxandroidtechnicalassignment.api.Api
 import com.example.carfaxandroidtechnicalassignment.db.AppDatabase
 import com.example.carfaxandroidtechnicalassignment.db.CarDataModel
@@ -31,27 +32,27 @@ class DataRepository @Inject constructor(
             if (response.isSuccessful && response.body() != null) {
                 var mutableList = mutableListOf<CarDataModel>()
                 val apiData = response.body()!!.listings
-
+                Log.d("XXXXXXXXXXX---->", "getList: ${apiData}")
                 for (i in apiData) {
                     var carDataModel = CarDataModel()
-                    carDataModel.id = i.id
+                    //carDataModel.id = i.id
                     carDataModel.model = i.model
-                    carDataModel.carImage = i.images.firstPhoto.large
+                    carDataModel.carImage = i.images.large.get(0)
                     carDataModel.make = i.make
-                    carDataModel.trim = i.trim
-                    carDataModel.bodytype = i.bodytype
+                    //carDataModel.trim = i.trim
+                    //carDataModel.bodytype = i.bodytype
                     carDataModel.currentPrice = i.currentPrice
-                    carDataModel.dealerAddress = i.dealer.address
-                    carDataModel.displacement = i.displacement
-                    carDataModel.drivetype = i.drivetype
-                    carDataModel.engine = i.engine
-                    carDataModel.exteriorColor = i.exteriorColor
-                    carDataModel.interiorColor = i.interiorColor
-                    carDataModel.fuel = i.fuel
+                    //carDataModel.dealerAddress = i.dealer.address
+                    //carDataModel.displacement = i.displacement
+                    //carDataModel.drivetype = i.drivetype
+                    //carDataModel.engine = i.engine
+//                    carDataModel.exteriorColor = i.exteriorColor
+//                    carDataModel.interiorColor = i.interiorColor
+                    //carDataModel.fuel = i.fuel
                     carDataModel.mileage = i.mileage
-                    carDataModel.transmission = i.transmission
+                    //carDataModel.transmission = i.transmission
                     carDataModel.year = i.year
-                    carDataModel.phone = i.dealer.phone
+                    //carDataModel.phone = i.dealer.phone
 
                     mutableList.add(carDataModel)
                 }
